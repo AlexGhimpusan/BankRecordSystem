@@ -6,7 +6,7 @@ namespace BankRecordSystem
 {
     class Costumer
     {
-        public string Name = "Andrei Popescu";
+        public string Name = "Ghimpusan Alexandru";
         public Account Acc = new Account();
     }
 }

@@ -14,63 +14,6 @@ namespace BankRecordSystem
                               "Buna ziua domnule " + myCostumer.Name + "!\n");
         }
 
-        public static bool checkPIN()
-        {
-            Console.WriteLine("Va ruga introduceti PIN-ul si apasati tasta ENTER: ");
-            try
-            {
-                string enteredVal = "";
-                do
-                {
-                    ConsoleKeyInfo key = Console.ReadKey(true);
-                    // Backspace should not work  
-                    if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
-                    {
-                        enteredVal += key.KeyChar;
-                        Console.Write("*");
-                    }
-                    else
-                    {
-                        if (key.Key == ConsoleKey.Backspace && enteredVal.Length > 0)
-                        {
-                            enteredVal = enteredVal.Substring(0, (enteredVal.Length - 1));
-                            Console.Write("\b \b");
-                        }
-                        else if (key.Key == ConsoleKey.Enter)
-                        {
-                            if (string.IsNullOrWhiteSpace(enteredVal))
-                            {
-                                Console.WriteLine("");
-                                Console.WriteLine("Nu ati introdus nicio cifra.");
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("");
-                                break;
-                            }
-                        }
-                    }
-                } while (true);
-                if (myCostumer.Acc.correctPIN(enteredVal))
-                {
-                    Console.WriteLine("AUTENTIFICAT!\n");
-                    System.Threading.Thread.Sleep(2000);
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("NEAUTENTIFICAT!\n");
-                    System.Threading.Thread.Sleep(2000);
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public static void showActions()
         {
             Console.WriteLine("***********************************************************************\n");
@@ -79,7 +22,8 @@ namespace BankRecordSystem
             Console.WriteLine("Alegeti una dintre optiunile de jos\n" +
                               "0->Iesire.\n" +
                               "1->Retragere numerar.\n" +
-                              "2->Depunere numerar.\n");
+                              "2->Depunere numerar.\n" +
+                              "3->Schimbare PIN.\n");
             Console.Write("Optiunea: ");
         }
 
@@ -93,7 +37,7 @@ namespace BankRecordSystem
         static void Main(string[] args)
         {
             welcome();
-            if (checkPIN())
+            if (myCostumer.Acc.checkPIN())
             {
                 while (true)
                 {
@@ -106,18 +50,19 @@ namespace BankRecordSystem
                             System.Threading.Thread.Sleep(2000);
                             return;
                         case 1:
-                            Console.Write("Introduceti suma pentru retragere: ");
-                            float withdrawSum = Convert.ToInt32(Console.ReadLine());
-                            myCostumer.Acc.withdrawMoney(withdrawSum);
-                            Console.WriteLine("Ati retras suma de: " + withdrawSum + "$\n");
+                            myCostumer.Acc.withdrawMoney();
                             System.Threading.Thread.Sleep(2000);
                             break;
                         case 2:
-                            Console.Write("Introduceti suma pentru depozitare: ");
-                            float depositSum = Convert.ToInt32(Console.ReadLine());
-                            myCostumer.Acc.depositMoney(depositSum);
-                            Console.WriteLine("Ati depozitat suma de: " + depositSum + "$\n");
+                            myCostumer.Acc.depositMoney();
                             System.Threading.Thread.Sleep(2000);
+                            break;
+                        case 3:
+                            myCostumer.Acc.changePIN();
+                            System.Threading.Thread.Sleep(2000);
+                            break;
+                        case 4:
+                            
                             break;
                         default:
                             Console.WriteLine("Nu ati introdus o optiune valabila. Va rugam reincercati.\n");
@@ -129,3 +74,9 @@ namespace BankRecordSystem
         }
     }
 }
+
+//TO DO:
+
+//Schimbare PIN
+//Mai multe account-uri
+//Transfer intre account-uri
